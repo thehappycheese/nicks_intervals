@@ -26,6 +26,7 @@ impl Interval{
 			None
 		}
 	}
+	
 	pub fn closed(lower_bound: f64, upper_bound: f64) -> Option<Interval>{
 		if lower_bound <= upper_bound {
 			Some(Interval{
@@ -47,6 +48,7 @@ impl Interval{
 			None
 		}
 	}
+
 	pub fn closed_open(lower_bound: f64, upper_bound: f64) -> Option<Interval>{
 		if lower_bound < upper_bound {
 			Some(Interval{
@@ -57,24 +59,28 @@ impl Interval{
 			None
 		}
 	}
+
 	pub fn open_inf(lower_bound:f64) -> Interval{
 		Interval{
 			lower_bound:FiniteBound{value:lower_bound, direction:PartOfLeft},
 			upper_bound:PositiveInfinity
 		}
 	}
+
 	pub fn closed_inf(lower_bound:f64) -> Interval{
 		Interval{
 			lower_bound:FiniteBound{value:lower_bound, direction:PartOfRight},
 			upper_bound:PositiveInfinity
 		}
 	}
+
 	pub fn inf_open(upper_bound:f64) -> Interval{
 		Interval{
 			lower_bound:NegativeInfinity,
 			upper_bound:FiniteBound{value:upper_bound, direction:PartOfRight}
 		}
 	}
+
 	pub fn inf_closed(upper_bound:f64) -> Interval{
 		Interval{
 			lower_bound:NegativeInfinity,

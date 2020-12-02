@@ -3,6 +3,9 @@
 mod interval;
 mod bound;
 
+#[macro_use]
+extern crate float_cmp;
+
 use interval::{Interval};
 
 

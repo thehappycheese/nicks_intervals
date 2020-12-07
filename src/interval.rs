@@ -1,7 +1,4 @@
-//Bound::{FiniteBound, PositiveInfinity, NegativeInfinity};
-//use Bound::BoundDirection::{PartOfLeft, PartOfRight};
-
-use super::bound;
+use crate::bound;
 
 use bound::{Bound, BoundDirection};
 use Bound::{FiniteBound, PositiveInfinity, NegativeInfinity};
@@ -10,8 +7,8 @@ use BoundDirection::{PartOfLeft, PartOfRight};
 
 #[derive(Debug)]
 pub struct Interval{
-	lower_bound:Bound,
-	upper_bound:Bound
+	pub lower_bound:Bound,
+	pub upper_bound:Bound
 }
 
 impl Interval{

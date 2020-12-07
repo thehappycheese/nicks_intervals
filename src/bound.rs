@@ -5,13 +5,13 @@
 use std::cmp;
 //use std::ops;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum BoundDirection{
 	PartOfLeft,
 	PartOfRight
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub enum Bound{
 	FiniteBound{
 		value:f64,
@@ -21,14 +21,26 @@ pub enum Bound{
 	PositiveInfinity
 }
 
-impl cmp::PartialEq<Bound> for Bound{
+impl cmp::Ord for Bound{
+	fn cmp(&self, other:&Self) -> cmp::Ordering{
+		if let Some(ordering) = self.partial_cmp(&other){
+			ordering
+		}else{
+			panic!("Yeet");
+		}
+	}
+}
+
+impl cmp::Eq for Bound{}
+
+impl cmp::PartialEq for Bound{
 	fn eq(&self, other: &Self) -> bool{
 		match other{
 			Bound::NegativeInfinity => {*self == Bound::NegativeInfinity}
 			Bound::PositiveInfinity => {*self == Bound::PositiveInfinity}
 			Bound::FiniteBound{value:other_value, direction:other_direction} =>{
-				if let Bound::FiniteBound{value: self_value,direction:self_direction} = self {
-					approx_eq!(f64, *other_value, *self_value, epsilon=0.000_001) && *other_direction == *self_direction
+				if let Bound::FiniteBound{value, direction:self_direction} = self {
+					approx_eq!(f64, *other_value, *value, epsilon=0.000_001) && *other_direction == *self_direction
 				}else{
 					false
 				}
@@ -60,7 +72,7 @@ impl cmp::PartialOrd<Bound> for Bound{
 					Bound::PositiveInfinity => Some(cmp::Ordering::Less),
 					Bound::FiniteBound{value:other_value, direction:other_direction} => {
 						// TODO: replace == comparison with isclose:
-						if approx_eq!(f64, *self_value, *other_value, epsilon=0.000_001) {
+						if self.eq approx_eq!(f64, *self_value, *other_value, epsilon=0.000_001) {
 						//if self_value == other_value {
 							if BoundDirection::PartOfLeft == *self_direction && BoundDirection::PartOfRight == *other_direction{
 								Some(cmp::Ordering::Greater)

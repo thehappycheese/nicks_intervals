@@ -1,7 +1,9 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
+mod interval_tree;
 mod interval;
 mod bound;
+
 
 #[macro_use]
 extern crate float_cmp;
@@ -18,6 +20,18 @@ fn main(){
 
 	println!("{:?}", a>b)
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 #[test]
 fn test_bound_order(){

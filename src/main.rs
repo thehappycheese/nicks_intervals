@@ -11,14 +11,18 @@ extern crate float_cmp;
 use interval::{Interval};
 use bound::{Bound, BoundDirection};
 use BoundDirection::{PartOfRight, PartOfLeft};
-
+use interval_tree::{Interval_Tree};
 
 fn main(){
-	let i = Interval::closed_inf(5.0);
-	let a = Bound::FiniteBound{value:10.0,direction:PartOfRight};
-	let b = Bound::FiniteBound{value:10.0,direction:PartOfLeft};
+	let mut tr = Interval_Tree::Empty;
+	if let Some(i) = Interval::closed(5.0, 5.0){
+		if let Some(q) = Interval::closed(4.0, 5.0){
+			tr.insert(i);
+			tr.insert(q);
+		}
+	}
 
-	println!("{:?}", a>b)
+	println!("{:#?}", tr)
 }
 
 

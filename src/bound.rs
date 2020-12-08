@@ -72,7 +72,7 @@ impl cmp::PartialOrd<Bound> for Bound{
 					Bound::PositiveInfinity => Some(cmp::Ordering::Less),
 					Bound::FiniteBound{value:other_value, direction:other_direction} => {
 						// TODO: replace == comparison with isclose:
-						if self.eq approx_eq!(f64, *self_value, *other_value, epsilon=0.000_001) {
+						if approx_eq!(f64, *self_value, *other_value, epsilon=0.000_001) {
 						//if self_value == other_value {
 							if BoundDirection::PartOfLeft == *self_direction && BoundDirection::PartOfRight == *other_direction{
 								Some(cmp::Ordering::Greater)

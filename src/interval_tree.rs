@@ -4,34 +4,51 @@ use Bound::{FiniteBound, PositiveInfinity, NegativeInfinity};
 use BoundDirection::{PartOfLeft, PartOfRight};
 use std::cmp;
 
+#[derive(Debug)]
+enum Node_Color{
+	Red,
+	Black
+}
+use Node_Color::{Red, Black};
+
+#[derive(Debug)]
 pub enum Interval_Tree{
-	Leaf{
+	Node{
 		value:Interval,
-		max_upper_bound:Bound,
+		color:Node_Color,
+		parent:Box<Interval_Tree>,
 		left:Box<Interval_Tree>,
 		right:Box<Interval_Tree>
 	},
 	Empty
 }
+use Interval_Tree::{Node, Empty};
+
+// sorted by lower bound only for now.
 
 impl Interval_Tree{
-	pub fn new_empty() -> Self{
-		Interval_Tree::Empty
+	pub fn new() -> Self{
+		Empty
 	}
-	pub fn new_leaf(value:Interval, max_upper:Bound)->Self{
-		// Create a copy of the upper_bound.
-		let b = value.upper_bound;
-		Interval_Tree::Leaf{value:value, max_upper_bound:b, left:Box::new(Interval_Tree::Empty), right:Box::new(Interval_Tree::Empty)}
-	}
-	pub fn insert(&mut self, new_value:Interval, max_upper:Bound){
-		match self{
-			Interval_Tree::Empty=>{
-				*self = Interval_Tree::new_leaf(new_value, max_upper)
+	pub fn insert(&mut self, new_value:Interval){
+		match *self{
+			Empty=>{
+				// this is the root node??
+				*self = Node{
+					value:new_value,
+					color:Black,
+					parent:Box::new(Empty),
+					left:Box::new(Empty),
+					right:Box::new(Empty)
+				};
 			},
-			Interval_Tree::Leaf{value, max_upper_bound, left, right}=>{
-				max_upper_bound = std::cmp::max(&mut max_upper, max_upper_bound);
+			Node{value, color, parent, left, right}=>{
 				if new_value.lower_bound < value.lower_bound {
-					left.insert(new_value, *max_upper_bound);
+					
+					left.insert(new_value);
+					if let Node{parent:left_parent, ..} = *left{
+						left_parent = &self;
+					}
 				} 
 			}
 		}
